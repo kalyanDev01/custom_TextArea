@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Counter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: black;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        textarea.max-reached {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        
+        .counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .char-count {
+            color: #475569;
+        }
+        
+        .char-count.warning {
+            color: #f59e0b;
+        }
+        
+        .char-count.error {
+            color: #ef4444;
+        }
+        
+        .max-label {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .warning-message {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #fef3c7;
+            border: 1px solid #f5a927;
+            border-radius: 6px;
+            color: #92400e;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .warning-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Message</h1>
+        
+        <textarea id="messageTextarea" placeholder="Enter your message here..." maxlength="200"></textarea>
+        
+        <div class="counter">
+            <span class="char-count" id="charCount">0/200 characters</span>
+            <span class="max-label">200 characters max</span>
+        </div>
+        
+        <div class="warning-message" id="warningMessage">
+            Maximum character limit reached. Cannot add more characters.
+        </div>
+    </div>
+
+    <script>
+        const textarea = document.getElementById('messageTextarea');
+        const charCount = document.getElementById('charCount');
+        const warningMessage = document.getElementById('warningMessage');
+        const MAX_CHARS = 200;
+
+        function updateCounter() {
+            const currentLength = textarea.value.length;
+            const remaining = MAX_CHARS - currentLength;
+            
+            charCount.textContent = `${currentLength}/${MAX_CHARS} characters`;
+            
+            charCount.className = 'char-count';
+            textarea.classList.remove('max-reached');
+            warningMessage.classList.remove('show');
+            
+            if (currentLength > 170) {
+                charCount.classList.add('warning');
+            }
+            
+            if (currentLength >= MAX_CHARS) {
+                charCount.classList.add('error');
+                textarea.classList.add('max-reached');
+                warningMessage.classList.add('show');
+            }
+        }
+
+        textarea.addEventListener('input', updateCounter);
+    </script>
+</body>
+</html>
